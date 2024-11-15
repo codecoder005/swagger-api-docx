@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: swagger-api-docx
+  profiles:
+    active: local
