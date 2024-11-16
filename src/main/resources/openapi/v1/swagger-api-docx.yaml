@@ -1,0 +1,184 @@
+openapi: 3.0.1
+info:
+  title: Swagger API Docx
+  description: |
+    Swagger API Docx Documentation
+  termsOfService: terms of service
+  contact:
+    name: Ramakrishna Janapureddy
+    email: developer.raakhi005@gmail.com
+  license:
+    name: Apache License 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Local
+- url: http://13.201.228.185:8080
+  description: Development
+- url: http://localhost:8080
+  description: Test
+- url: http://15.206.151.118:8080
+  description: Production
+paths:
+  /api/v1/users:
+    post:
+      tags:
+      - User Management
+      summary: Create a new user
+      description: This endpoint allows the creation of a new user. The request should
+        include the necessary details for creating a user.
+      externalDocs:
+        description: Find more details on the API usage
+        url: https://example.com/api-docs/user-management
+        x-support:
+          phone: +1-800-123-4567
+          contact: support@example.com
+        x-api-version:
+          version: 1.0
+      operationId: 8beeb49f-9beb-4862-b36a-b889b45ed908
+      parameters:
+      - name: channel-identifier
+        in: header
+        description: "A mandatory header used to specify the originating channel of\
+          \ the request. Valid values include 'MOBILE' for mobile apps, 'WEB' for\
+          \ browser-based applications, and 'DESKTOP' for desktop applications."
+        required: true
+        schema:
+          pattern: MOBILE|WEB|DESKTOP
+          type: string
+      requestBody:
+        description: Payload containing user details for creating a new user
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+        required: true
+      responses:
+        "201":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateUserResponse"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDetailResponse"
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDetailResponse"
+        "500":
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDetailResponse"
+        "503":
+          description: service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDetailResponse"
+              examples:
+                exception detail response:
+                  description: "Example of an error response when the service is unavailable.\
+                    \ The 'status' field indicates the HTTP status code, 'message'\
+                    \ provides a description of the error, and 'timestamp' records\
+                    \ when the error occurred."
+                  value:
+                    status: 503
+                    message: Internal server error
+                    timestamp: 2024-11-15T19:33:52.955Z
+          links:
+            retryAfter:
+              operationId: retryServiceOperation
+              parameters:
+                retry-time: ""
+              description: Link to retry the service after a certain period
+            serviceStatus:
+              operationRef: /service-status
+              parameters:
+                userId: ""
+              description: Link to check the service status
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    CreateUserResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+    ExceptionDetailResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    openidConnectScheme:
+      type: openIdConnect
+      description: OpenID Connect Authentication
+      openIdConnectUrl: https://accounts.google.com/.well-known/openid-configuration
+    apiKeyScheme:
+      type: apiKey
+      description: API Key Authentication
+      name: apiKeyScheme
+      in: header
+      scheme: ApiKey
+    basicAuth:
+      type: http
+      description: Basic Authentication Username and Password
+      in: header
+      scheme: basic
+    oauth2Scheme:
+      type: oauth2
+      description: OAuth2 Authentication using Access Token
+      in: header
+      scheme: bearer
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            delete: Grants delete access
+    bearerAuth:
+      type: http
+      description: Bearer Authentication using JWT
+      in: header
+      scheme: bearer
+      bearerFormat: JWT
+    mutualTlsScheme:
+      type: mutualTLS
+      description: Mutual TLS Authentication (client and server both authenticate
+        using certificates)
+      in: header
+      scheme: tls

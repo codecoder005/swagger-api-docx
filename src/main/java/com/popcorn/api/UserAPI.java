@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+import io.swagger.v3.oas.annotations.links.Link;
+import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -54,6 +56,19 @@ public interface UserAPI {
                     @ApiResponse(
                             responseCode = "503",
                             description = "service unavailable",
+                            links = {
+                                    @Link(
+                                            name = "retryAfter",
+                                            operationId = "retryServiceOperation", // Operation that handles retry
+                                            description = "Link to retry the service after a certain period",
+                                            parameters = {@LinkParameter(name = "retry-time")}
+                                    ),
+                                    @Link(
+                                            name = "serviceStatus",
+                                            operationRef = "/service-status",  // A reference to an existing operation in the OpenAPI definition
+                                            description = "Link to check the service status",
+                                            parameters = {@LinkParameter(name = "userId")}
+                                    )},
                             content = {@Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ExceptionDetailResponse.class),
@@ -81,7 +96,6 @@ public interface UserAPI {
                             )
                     }
             )
-
     )
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<CreateUserResponse> createUser(@Pattern(regexp = "MOBILE|WEB|DESKTOP", message = "Invalid channel identifier") @RequestHeader(name = REQUEST_HEADER_CHANNEL_IDENTIFIER) final String CHANNEL_IDENTIFIER, @RequestBody CreateUserRequest request);

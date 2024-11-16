@@ -1,5 +1,6 @@
 package com.popcorn.controller;
 
+import com.google.gson.Gson;
 import com.popcorn.api.UserAPI;
 import com.popcorn.dto.request.CreateUserRequest;
 import com.popcorn.dto.response.CreateUserResponse;
@@ -17,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController implements UserAPI {
     private final UserService userService;
+    private final Gson jsonHelper;
 
     @Override
     public ResponseEntity<CreateUserResponse> createUser(final String CHANNEL_IDENTIFIER, CreateUserRequest request) {
-        log.info("UserController::createUser {}, {}", CHANNEL_IDENTIFIER, request);
+        log.info("UserController::createUser {}, {}", CHANNEL_IDENTIFIER, jsonHelper.toJson(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.createUser(request));
     }
