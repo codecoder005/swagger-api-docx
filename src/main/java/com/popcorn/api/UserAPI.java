@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,7 +29,7 @@ import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_IDENT
 public interface UserAPI {
     @Operation(
             summary = "Create a new user",
-            tags = {"User Management"},
+            tags = {"Users CRUD Operations Management"},
             description = "This endpoint allows the creation of a new user. The request should include the necessary details for creating a user.",
             method = "POST",
             operationId = "8beeb49f-9beb-4862-b36a-b889b45ed908",
@@ -97,6 +98,7 @@ public interface UserAPI {
                     }
             )
     )
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<CreateUserResponse> createUser(@Pattern(regexp = "MOBILE|WEB|DESKTOP", message = "Invalid channel identifier") @RequestHeader(name = REQUEST_HEADER_CHANNEL_IDENTIFIER) final String CHANNEL_IDENTIFIER, @RequestBody CreateUserRequest request);
 }

@@ -4,6 +4,7 @@ import com.popcorn.dto.response.ExceptionDetailResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -36,6 +37,19 @@ public class GlobalAPIControllerAdvice {
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(response);
+    }
+
+    @ExceptionHandler(value = {AuthorizationDeniedException.class})
+    public ResponseEntity<ExceptionDetailResponse> handleAuthorizationDeniedException(AuthorizationDeniedException ex, WebRequest request) {
+        log.error("GlobalAPIControllerAdvice::handleAuthorizationDeniedException {}", ex.getMessage());
+        ex.printStackTrace();
+        ExceptionDetailResponse response = ExceptionDetailResponse.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(response);
     }
 }
