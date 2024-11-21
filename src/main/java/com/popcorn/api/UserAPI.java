@@ -20,9 +20,7 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_IDENTIFIER;
 
@@ -43,6 +41,16 @@ public interface UserAPI {
                     )
             ),
             parameters = {
+                    @Parameter(
+                            name = "countryId", required = true, in = ParameterIn.PATH,
+                            schema = @Schema(implementation = String.class, title = "Country Identifier"),
+                            description = "A mandatory countryId"
+                    ),
+                    @Parameter(
+                            name = "question", required = true, in = ParameterIn.QUERY,
+                            schema = @Schema(implementation = String.class, title = "Question String"),
+                            description = "A mandatory question"
+                    ),
                     @Parameter(
                             name = REQUEST_HEADER_CHANNEL_IDENTIFIER, required = true, in = ParameterIn.HEADER,
                             schema = @Schema(implementation = String.class, title = "Channel Identifier", allowableValues = {"MOBILE", "WEB", "DESKTOP"} /*Add allowed values here*/),
@@ -99,6 +107,10 @@ public interface UserAPI {
             )
     )
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<CreateUserResponse> createUser(@Pattern(regexp = "MOBILE|WEB|DESKTOP", message = "Invalid channel identifier") @RequestHeader(name = REQUEST_HEADER_CHANNEL_IDENTIFIER) final String CHANNEL_IDENTIFIER, @RequestBody CreateUserRequest request);
+    @PostMapping(value = "/{countryId}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<CreateUserResponse> createUser(
+            @PathVariable(value = "countryId", required = true) String countryId,
+            @RequestParam(value = "question", required = true) String question,
+            @Pattern(regexp = "MOBILE|WEB|DESKTOP", message = "Invalid channel identifier") @RequestHeader(name = REQUEST_HEADER_CHANNEL_IDENTIFIER) final String CHANNEL_IDENTIFIER,
+            @RequestBody CreateUserRequest request);
 }

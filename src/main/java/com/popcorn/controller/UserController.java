@@ -21,7 +21,7 @@ public class UserController implements UserAPI {
     private final Gson jsonHelper;
 
     @Override
-    public ResponseEntity<CreateUserResponse> createUser(final String CHANNEL_IDENTIFIER, CreateUserRequest request) {
+    public ResponseEntity<CreateUserResponse> createUser(String path, String query, final String CHANNEL_IDENTIFIER, CreateUserRequest request) {
         log.info("UserController::createUser {}, {}", CHANNEL_IDENTIFIER, jsonHelper.toJson(request));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.createUser(request));
