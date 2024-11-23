@@ -8,6 +8,7 @@ import com.popcorn.filter.EveryHttpRequestInterceptorFilter;
 import com.popcorn.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -54,6 +55,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = "user", password = "password", roles = {"USER"})
+    @DisplayName(value = "Create user 201")
     void testCreateUser() throws Exception {
         CreateUserRequest requestBody = CreateUserRequest.builder()
                 .name("John Doe")
@@ -84,6 +86,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = "user", password = "password", roles = {"EMPLOYEE"})
+    @DisplayName(value = "Authorization Denied Exception")
     void testCreateUserShouldThrowAuthorizationDeniedException() throws Exception {
         CreateUserRequest requestBody = CreateUserRequest.builder()
                 .name("John Doe")

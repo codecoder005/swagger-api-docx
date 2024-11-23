@@ -44,12 +44,12 @@ public interface UserAPI {
                     @Parameter(
                             name = "countryId", required = true, in = ParameterIn.PATH,
                             schema = @Schema(implementation = String.class, title = "Country Identifier"),
-                            description = "A mandatory countryId"
+                            description = "A unique identifier representing the country where the user is being created. This is typically a country code (e.g., 'US', 'IN')."
                     ),
                     @Parameter(
                             name = "question", required = true, in = ParameterIn.QUERY,
-                            schema = @Schema(implementation = String.class, title = "Question String"),
-                            description = "A mandatory question"
+                            schema = @Schema(implementation = String.class, title = "Security Question"),
+                            description = "A user-specific question, often used for security or customization purposes."
                     ),
                     @Parameter(
                             name = REQUEST_HEADER_CHANNEL_IDENTIFIER, required = true, in = ParameterIn.HEADER,

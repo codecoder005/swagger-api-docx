@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -53,6 +54,20 @@ public class GlobalAPIControllerAdvice {
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @ExceptionHandler(value = {ServletRequestBindingException.class})
+    public ResponseEntity<ExceptionDetailResponse> handleServletRequestBindingException(ServletRequestBindingException ex, WebRequest request) {
+        log.error("GlobalAPIControllerAdvice::handleServletRequestBindingException {}", ex.getMessage());
+        ex.printStackTrace();
+        ExceptionDetailResponse response = ExceptionDetailResponse.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }

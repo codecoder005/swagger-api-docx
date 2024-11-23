@@ -4,3 +4,9 @@ spring:
       name: user
       password: password
       roles: USER, ADMIN
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

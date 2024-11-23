@@ -3,7 +3,21 @@ info:
   title: Swagger API Docx
   description: |
     Swagger API Docx Documentation
-  termsOfService: terms of service
+
+    Copyright [2024] [Ramakrishna Janapureddy]
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  termsOfService: ' https://www.apache.org/licenses/LICENSE-2.0 '
   contact:
     name: Ramakrishna Janapureddy
     email: developer.raakhi005@gmail.com
@@ -12,19 +26,19 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0
   version: 1.0.0
 servers:
-- url: http://localhost:8080
-  description: Local
-- url: http://13.201.228.185:8080
-  description: Development
-- url: http://localhost:8080
-  description: Test
-- url: http://15.206.151.118:8080
-  description: Production
+  - url: http://localhost:8080
+    description: Local
+  - url: http://13.201.228.185:8080
+    description: Development
+  - url: http://localhost:8080
+    description: Test
+  - url: http://15.206.151.118:8080
+    description: Production
 paths:
-  /api/v1/users:
+  /api/v1/users/{countryId}:
     post:
       tags:
-      - User Management
+        - Users CRUD Operations Management
       summary: Create a new user
       description: This endpoint allows the creation of a new user. The request should
         include the necessary details for creating a user.
@@ -38,15 +52,29 @@ paths:
           version: 1.0
       operationId: 8beeb49f-9beb-4862-b36a-b889b45ed908
       parameters:
-      - name: channel-identifier
-        in: header
-        description: "A mandatory header used to specify the originating channel of\
+        - name: countryId
+          in: path
+          description: "A unique identifier representing the country where the user\
+          \ is being created. This is typically a country code (e.g., 'US', 'IN')."
+          required: true
+          schema:
+            type: string
+        - name: question
+          in: query
+          description: "A user-specific question, often used for security or customization\
+          \ purposes."
+          required: true
+          schema:
+            type: string
+        - name: channel-identifier
+          in: header
+          description: "A mandatory header used to specify the originating channel of\
           \ the request. Valid values include 'MOBILE' for mobile apps, 'WEB' for\
           \ browser-based applications, and 'DESKTOP' for desktop applications."
-        required: true
-        schema:
-          pattern: MOBILE|WEB|DESKTOP
-          type: string
+          required: true
+          schema:
+            pattern: MOBILE|WEB|DESKTOP
+            type: string
       requestBody:
         description: Payload containing user details for creating a new user
         content:
@@ -107,8 +135,8 @@ paths:
                 userId: ""
               description: Link to check the service status
       security:
-      - basicAuth: []
-      - bearerAuth: []
+        - basicAuth: []
+        - bearerAuth: []
 components:
   schemas:
     CreateUserRequest:
@@ -142,16 +170,16 @@ components:
           type: string
           format: date-time
   securitySchemes:
-    openidConnectScheme:
-      type: openIdConnect
-      description: OpenID Connect Authentication
-      openIdConnectUrl: https://accounts.google.com/.well-known/openid-configuration
     apiKeyScheme:
       type: apiKey
       description: API Key Authentication
       name: apiKeyScheme
       in: header
       scheme: ApiKey
+    openidConnectScheme:
+      type: openIdConnect
+      description: OpenID Connect Authentication
+      openIdConnectUrl: https://accounts.google.com/.well-known/openid-configuration
     basicAuth:
       type: http
       description: Basic Authentication Username and Password
