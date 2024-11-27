@@ -1,11 +1,8 @@
 package com.popcorn.controller;
 
 import com.google.gson.Gson;
-import com.popcorn.advice.GlobalAPIControllerAdvice;
 import com.popcorn.dto.request.CreateUserRequest;
-import com.popcorn.dto.response.CreateUserResponse;
 import com.popcorn.filter.EveryHttpRequestInterceptorFilter;
-import com.popcorn.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,15 +12,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,26 +27,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
-class UserControllerTest {
+class UserControllerIT {
+    @Autowired
+    private WebApplicationContext webApplicationContext;
     @Autowired
     private EveryHttpRequestInterceptorFilter filter;
     @Autowired
-    private UserController userController;
-    @Autowired
-    private GlobalAPIControllerAdvice controllerAdvice;
-    @Autowired
     private Gson jsonHelper;
-
-    @MockitoBean
-    private UserService userService;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .alwaysDo(print())
+                .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
                 .addFilters(filter)
-                .setControllerAdvice(controllerAdvice).build();
+                .apply(springSecurity())
+                .build();
     }
 
     @Test
@@ -63,14 +56,6 @@ class UserControllerTest {
                 .email("john.doe@gmail.com")
                 .password("password")
                 .build();
-        CreateUserResponse responseBody = CreateUserResponse.builder()
-                .userId(UUID.randomUUID())
-                .name("John Doe")
-                .email("john.doe@gmail.com")
-                .build();
-
-        when(userService.createUser(any()))
-                .thenReturn(responseBody);
 
         final String API_URL = "/api/v1/users/{countryId}";
         mockMvc.perform(
@@ -82,8 +67,7 @@ class UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON_VALUE)
                             .characterEncoding(StandardCharsets.UTF_8.name())
                             .content(jsonHelper.toJson(requestBody))
-                ).andDo(print())
-                .andExpect(status().isCreated())
+                ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("John Doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@gmail.com"))
                 .andReturn();
@@ -107,8 +91,7 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .characterEncoding(StandardCharsets.UTF_8.name())
                                 .content(jsonHelper.toJson(requestBody))
-                ).andDo(print())
-                .andExpect(status().isUnauthorized())
+                ).andExpect(status().isUnauthorized())
                 .andReturn();
     }
 }

@@ -5,26 +5,36 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.6</version>
+		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.popcorn</groupId>
 	<artifactId>swagger-api-docx</artifactId>
 	<version>1.0.0</version>
-	<name>swagger-api-docx</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
+	<name>Swagger API Documentation</name>
+	<description>A demo project to integrate Swagger API documentation with a Spring Boot application.</description>
+	<url>https://github.com/codecoder005/swagger-api-docx</url>
 	<licenses>
-		<license/>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>codecoder005</id>
+			<name>Ramakrishna Janapureddy</name>
+			<email>developer.raakhi005@gmail.com</email>
+			<organization>MedTimes Inc</organization>
+			<organizationUrl>https://medtimes.life</organizationUrl>
+		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:git://github.com/codecoder005/swagger-api-docx.git</connection>
+		<developerConnection>scm:git:ssh://github.com/codecoder005/swagger-api-docx.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/codecoder005/swagger-api-docx</url>
 	</scm>
 	<properties>
 		<java.version>21</java.version>
@@ -70,8 +80,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.6.0</version>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.7.0</version>
 		</dependency>
 
 		<dependency>

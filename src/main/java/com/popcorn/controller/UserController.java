@@ -9,8 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -21,9 +24,11 @@ public class UserController implements UserAPI {
     private final Gson jsonHelper;
 
     @Override
-    public ResponseEntity<CreateUserResponse> createUser(String path, String query, final String CHANNEL_IDENTIFIER, CreateUserRequest request) {
-        log.info("UserController::createUser {}, {}", CHANNEL_IDENTIFIER, jsonHelper.toJson(request));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.createUser(request));
+    public ResponseEntity<CreateUserResponse> createUser(String countryId, String question, String suggestion, String CHANNEL_IDENTIFIER, String CHANNEL_TYPE, CreateUserRequest request, Principal principal) {
+        log.info("UserController::createUser countryId: {}, question: {}, suggestion: {}, CHANNEL_IDENTIFIER: {}, CHANNEL_TYPE: {}, requestBody: {}", countryId, question, suggestion, CHANNEL_IDENTIFIER, CHANNEL_TYPE, jsonHelper.toJson(request));
+        if (principal instanceof UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
+            log.info(jsonHelper.toJson(usernamePasswordAuthenticationToken));
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 }

@@ -17,12 +17,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_IDENTIFIER;
+import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_TYPE;
 
 public interface UserAPI {
     @Operation(
@@ -52,9 +56,19 @@ public interface UserAPI {
                             description = "A user-specific question, often used for security or customization purposes."
                     ),
                     @Parameter(
+                            name = "suggestion", required = false, in = ParameterIn.QUERY,
+                            schema = @Schema(implementation = String.class, title = "Suggestion"),
+                            description = "Suggestion for the Security question (optional)"
+                    ),
+                    @Parameter(
                             name = REQUEST_HEADER_CHANNEL_IDENTIFIER, required = true, in = ParameterIn.HEADER,
                             schema = @Schema(implementation = String.class, title = "Channel Identifier", allowableValues = {"MOBILE", "WEB", "DESKTOP"} /*Add allowed values here*/),
                             description = "A mandatory header used to specify the originating channel of the request. Valid values include 'MOBILE' for mobile apps, 'WEB' for browser-based applications, and 'DESKTOP' for desktop applications."
+                    ),
+                    @Parameter(
+                            name = REQUEST_HEADER_CHANNEL_TYPE, required = false, in = ParameterIn.HEADER,
+                            schema = @Schema(implementation = String.class, title = "Channel Type"),
+                            description = "An optional header used to specify the type of channel."
                     )
             },
             responses = {
@@ -109,8 +123,12 @@ public interface UserAPI {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping(value = "/{countryId}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<CreateUserResponse> createUser(
-            @PathVariable(value = "countryId", required = true) String countryId,
-            @RequestParam(value = "question", required = true) String question,
+            @PathVariable(value = "countryId") String countryId,
+            @RequestParam(value = "question") String question,
+            @RequestParam(value = "suggestion", required = false) String suggestion,
             @Pattern(regexp = "MOBILE|WEB|DESKTOP", message = "Invalid channel identifier") @RequestHeader(name = REQUEST_HEADER_CHANNEL_IDENTIFIER) final String CHANNEL_IDENTIFIER,
-            @RequestBody CreateUserRequest request);
+            @RequestHeader(name = REQUEST_HEADER_CHANNEL_TYPE, required = false) final String CHANNEL_TYPE,
+            @RequestBody CreateUserRequest request,
+            Principal principal
+    );
 }
