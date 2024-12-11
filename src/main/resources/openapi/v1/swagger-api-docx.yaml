@@ -66,14 +66,60 @@ paths:
           required: true
           schema:
             type: string
-        - name: channel-identifier
-          in: header
-          description: "A mandatory header used to specify the originating channel of\
-          \ the request. Valid values include 'MOBILE' for mobile apps, 'WEB' for\
-          \ browser-based applications, and 'DESKTOP' for desktop applications."
+        - name: suggestion
+          in: query
+          description: Suggestion for the Security question (optional)
+          required: false
+          schema:
+            type: string
+        - name: gender
+          in: query
+          description: Gender of the candidate
           required: true
           schema:
-            pattern: MOBILE|WEB|DESKTOP
+            type: string
+            enum:
+              - MALE
+              - FEMALE
+              - OTHER
+        - name: region
+          in: query
+          description: Choice of Region for deployment
+          required: true
+          schema:
+            type: string
+            enum:
+              - US_EAST_1
+              - US_WEST_1
+              - EU_EAST_1
+              - EU_WEST_1
+              - AP_EAST_1
+              - AP_WEST_1
+              - AP_SOUTH_1
+              - AP_SOUTHEAST_1
+        - name: channel-identifier
+          in: query
+          description: A mandatory query param used to specify the originating channel
+            of the request.
+          required: true
+          schema:
+            type: string
+            enum:
+              - WEB
+              - MOBILE
+              - IOT_DEVICE
+              - DESKTOP
+        - name: Channel-Type
+          in: header
+          description: An optional header used to specify the type of channel.
+          required: false
+          schema:
+            type: string
+        - name: Client-Id
+          in: header
+          description: A required header used to know who is calling this API.
+          required: true
+          schema:
             type: string
       requestBody:
         description: Payload containing user details for creating a new user
