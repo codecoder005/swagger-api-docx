@@ -1,5 +1,9 @@
 package com.popcorn.api;
 
+import com.popcorn.common.ChannelIdentifier;
+import com.popcorn.common.CustomHeaders;
+import com.popcorn.common.Gender;
+import com.popcorn.common.Region;
 import com.popcorn.dto.request.CreateUserRequest;
 import com.popcorn.dto.response.CreateUserResponse;
 import com.popcorn.dto.response.ExceptionDetailResponse;
@@ -16,8 +20,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.constraints.Pattern;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_IDENTIFIER;
+import static com.popcorn.util.AppConstants.Headers.CHANNEL_IDENTIFIER;
 import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_TYPE;
 
 public interface UserAPI {
@@ -61,14 +63,29 @@ public interface UserAPI {
                             description = "Suggestion for the Security question (optional)"
                     ),
                     @Parameter(
-                            name = REQUEST_HEADER_CHANNEL_IDENTIFIER, required = true, in = ParameterIn.HEADER,
-                            schema = @Schema(implementation = String.class, title = "Channel Identifier", allowableValues = {"MOBILE", "WEB", "DESKTOP"} /*Add allowed values here*/),
-                            description = "A mandatory header used to specify the originating channel of the request. Valid values include 'MOBILE' for mobile apps, 'WEB' for browser-based applications, and 'DESKTOP' for desktop applications."
+                            name = "gender", required = true, in = ParameterIn.QUERY,
+                            schema = @Schema(implementation = Gender.class, title = "Gender"),
+                            description = "Gender of the candidate"
                     ),
                     @Parameter(
-                            name = REQUEST_HEADER_CHANNEL_TYPE, required = false, in = ParameterIn.HEADER,
-                            schema = @Schema(implementation = String.class, title = "Channel Type"),
+                            name = "region", required = true, in = ParameterIn.QUERY,
+                            schema = @Schema(implementation = Region.class, title = "Region"),
+                            description = "Choice of Region for deployment"
+                    ),
+                    @Parameter(
+                            name = CHANNEL_IDENTIFIER, required = true, in = ParameterIn.QUERY,
+                            schema = @Schema(implementation = ChannelIdentifier.class, title = "Channel Identifier"),
+                            description = "A mandatory query param used to specify the originating channel of the request."
+                    ),
+                    @Parameter(
+                            name = CustomHeaders.CHANNEL_TYPE, required = false, in = ParameterIn.HEADER,
+                            schema = @Schema(implementation = String.class, title = "Channel-Type"),
                             description = "An optional header used to specify the type of channel."
+                    ),
+                    @Parameter(
+                            name = CustomHeaders.CLIENT_ID, required = true, in = ParameterIn.HEADER,
+                            schema = @Schema(implementation = String.class, title = "Client-Id"),
+                            description = "A required header used to know who is calling this API."
                     )
             },
             responses = {
@@ -126,8 +143,11 @@ public interface UserAPI {
             @PathVariable(value = "countryId") String countryId,
             @RequestParam(value = "question") String question,
             @RequestParam(value = "suggestion", required = false) String suggestion,
-            @Pattern(regexp = "MOBILE|WEB|DESKTOP", message = "Invalid channel identifier") @RequestHeader(name = REQUEST_HEADER_CHANNEL_IDENTIFIER) final String CHANNEL_IDENTIFIER,
-            @RequestHeader(name = REQUEST_HEADER_CHANNEL_TYPE, required = false) final String CHANNEL_TYPE,
+            @RequestParam(value = "gender") Gender gender,
+            @RequestParam(value = "region") Region region,
+            @RequestParam(value = "channel-identifier") ChannelIdentifier channelIdentifier,
+            @RequestHeader(name = CustomHeaders.CHANNEL_TYPE, required = false) final String channelType,
+            @RequestHeader(name = CustomHeaders.CLIENT_ID) final String clientId,
             @RequestBody CreateUserRequest request,
             Principal principal
     );

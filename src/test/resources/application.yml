@@ -1,3 +1,7 @@
 spring:
   application:
     name: swagger-api-docx
+
+outbound:
+  remote-user-api-client:
+    url: "localhost:18080"

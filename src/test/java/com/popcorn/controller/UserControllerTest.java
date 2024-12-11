@@ -2,6 +2,10 @@ package com.popcorn.controller;
 
 import com.google.gson.Gson;
 import com.popcorn.advice.GlobalAPIControllerAdvice;
+import com.popcorn.common.ChannelIdentifier;
+import com.popcorn.common.CustomHeaders;
+import com.popcorn.common.Gender;
+import com.popcorn.common.Region;
 import com.popcorn.dto.request.CreateUserRequest;
 import com.popcorn.dto.response.CreateUserResponse;
 import com.popcorn.filter.EveryHttpRequestInterceptorFilter;
@@ -15,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
+@ActiveProfiles(profiles = {"unit-test"})
 class UserControllerTest {
     @Autowired
     private EveryHttpRequestInterceptorFilter filter;
@@ -75,10 +81,13 @@ class UserControllerTest {
         final String API_URL = "/api/v1/users/{countryId}";
         mockMvc.perform(
                     post(API_URL, "IND")
-                            .header("channel-identifier", "WEB")
-                            .header("channel-type", "BROWSER")
                             .param("question", "Who won 2024 US General elections")
                             .param("suggestion", "The man who challenges the world")
+                            .param("gender", "MALE")
+                            .param("region", "AP_SOUTH_1")
+                            .param("channel-identifier", "WEB")
+                            .header(CustomHeaders.CHANNEL_TYPE, "Channel-Type")
+                            .header(CustomHeaders.CLIENT_ID, "MockMvc.class")
                             .contentType(MediaType.APPLICATION_JSON_VALUE)
                             .characterEncoding(StandardCharsets.UTF_8.name())
                             .content(jsonHelper.toJson(requestBody))
@@ -102,8 +111,13 @@ class UserControllerTest {
         final String API_URL = "/api/v1/users/{countryId}";
         mockMvc.perform(
                         post(API_URL, "IND")
-                                .header("channel-identifier", "WEB")
                                 .param("question", "Who won 2024 US General elections")
+                                .param("suggestion", "The man who challenges the world")
+                                .param("gender", "MALE")
+                                .param("region", "AP_SOUTH_1")
+                                .param("channel-identifier", "WEB")
+                                .header(CustomHeaders.CHANNEL_TYPE, "Channel-Type")
+                                .header(CustomHeaders.CLIENT_ID, "MockMvc.class")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .characterEncoding(StandardCharsets.UTF_8.name())
                                 .content(jsonHelper.toJson(requestBody))

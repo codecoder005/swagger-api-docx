@@ -4,9 +4,25 @@ spring:
       name: user
       password: password
       roles: USER, ADMIN
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: FULL
+          remoteUserAPIClient:
+            connect-timeout: 60000
+            read-timeout: 60000
+            context:
+              keys: headers
+              include-standard-header-keys: true
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+outbound:
+  remote-user-api-client:
+    url: localhost:18080
