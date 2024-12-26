@@ -1,4 +1,4 @@
-package com.popcorn.controller;
+package com.popcorn.controller.user;
 
 import com.google.gson.Gson;
 import com.popcorn.api.UserAPI;
@@ -18,6 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+/**
+ * ✽ UserController is a REST API interface for user operations.
+ * It defines an endpoint to create a new user.
+ * The endpoint receives a request body with the user details and returns a response with the user details.
+ * The controller logs the request details and the response details.
+ * The controller implements the {@link UserAPI} interface to define the user operations.
+ */
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor

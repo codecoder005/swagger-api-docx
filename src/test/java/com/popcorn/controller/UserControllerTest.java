@@ -2,10 +2,8 @@ package com.popcorn.controller;
 
 import com.google.gson.Gson;
 import com.popcorn.advice.GlobalAPIControllerAdvice;
-import com.popcorn.common.ChannelIdentifier;
 import com.popcorn.common.CustomHeaders;
-import com.popcorn.common.Gender;
-import com.popcorn.common.Region;
+import com.popcorn.controller.user.UserController;
 import com.popcorn.dto.request.CreateUserRequest;
 import com.popcorn.dto.response.CreateUserResponse;
 import com.popcorn.filter.EveryHttpRequestInterceptorFilter;
@@ -17,10 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -48,7 +46,7 @@ class UserControllerTest {
     @Autowired
     private Gson jsonHelper;
 
-    @MockitoBean
+    @MockBean
     private UserService userService;
 
     private MockMvc mockMvc;

@@ -1,0 +1,162 @@
+{
+  "consumer": {
+    "name": "user-api-consumer"
+  },
+  "interactions": [
+    {
+      "comments": {
+        "text": [
+
+        ]
+      },
+      "description": "request to create user with valid data",
+      "key": "707b7b2f",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "create user 201"
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "email": "john.doe@email.com",
+            "name": "John Doe",
+            "password": "password"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Channel-Type": [
+            "\uAAC4"
+          ],
+          "Client-Id": [
+            "\uAE6E\uF0ED"
+          ],
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "header": {
+            "Channel-Type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            },
+            "Client-Id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            }
+          },
+          "query": {
+            "channel-identifier": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            },
+            "gender": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            },
+            "question": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            },
+            "region": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            },
+            "suggestion": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": ".*"
+                }
+              ]
+            }
+          }
+        },
+        "method": "POST",
+        "path": "/api/v1/users",
+        "query": {
+          "channel-identifier": [
+            "\u4F11"
+          ],
+          "gender": [
+            "\uDD79\uE30E\uE0D2\u7FEF\uEDA8\u3318"
+          ],
+          "question": [
+            "\uDE1B\uAA67"
+          ],
+          "region": [
+            "\uDCC8"
+          ],
+          "suggestion": [
+            "\uA745"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "content": {
+            "email": "john.doe@email.com",
+            "name": "John Doe",
+            "userId": "dd65d4f2-3d5c-43a7-9c04-c4fa5d51dc2a"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 201
+      },
+      "transport": "http",
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.6.14"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "user-api-provider"
+  }
+}

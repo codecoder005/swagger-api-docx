@@ -18,6 +18,10 @@ spring:
               include-standard-header-keys: true
 
 management:
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
   endpoints:
     web:
       exposure:

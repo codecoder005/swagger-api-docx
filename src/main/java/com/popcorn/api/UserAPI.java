@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 import static com.popcorn.util.AppConstants.Headers.CHANNEL_IDENTIFIER;
-import static com.popcorn.util.AppConstants.Headers.REQUEST_HEADER_CHANNEL_TYPE;
 
 public interface UserAPI {
     @Operation(

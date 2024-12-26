@@ -17,6 +17,9 @@ public class AppSecurityConfiguration {
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
+            "/api/**",
+            "/api/docs/**",
+            "/api/swagger-ui/**",
             "/swagger-resources",
             "/swagger-resources/**",
             "/configuration/ui",
@@ -26,7 +29,8 @@ public class AppSecurityConfiguration {
             "/swagger-ui.html",
             "/graphiql/**",
             "/graphql/**",
-            "/actuator/**"
+            "/actuator/**",
+            "/ping"
     };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

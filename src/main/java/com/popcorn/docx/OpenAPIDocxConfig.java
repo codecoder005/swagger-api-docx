@@ -1,5 +1,6 @@
 package com.popcorn.docx;
 
+import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -11,6 +12,9 @@ import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -115,6 +119,46 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 )
         )
 )
+@Configuration
 public class OpenAPIDocxConfig {
+    static {
+        ModelResolver.enumsAsRef = true;
+    }
 
+    @Bean
+    public GroupedOpenApi groupedOpenApi() {
+        String[] packagesToScan = {
+                "com.popcorn.controller"
+        };
+        return GroupedOpenApi.builder()
+                .group("swagger-api-docx")
+                .packagesToScan(packagesToScan)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi pingOpenApiDocumentation() {
+        String[] packagesToScan = {
+                "com.popcorn.controller.ping"
+        };
+        return GroupedOpenApi.builder()
+                .group("ping")
+                .packagesToScan(packagesToScan)
+                .addOpenApiCustomizer(openApi -> openApi.setInfo(new io.swagger.v3.oas.models.info.Info()
+                        .title("Ping Integration")
+                        .description("Ping REST API DOCUMENTATION")
+                        .version("1.0.0")))
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi usersOpenApiDocumentation() {
+        String[] packagesToScan = {
+                "com.popcorn.controller.user"
+        };
+        return GroupedOpenApi.builder()
+                .group("users")
+                .packagesToScan(packagesToScan)
+                .build();
+    }
 }

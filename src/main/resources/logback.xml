@@ -1,0 +1,41 @@
+<configuration>
+
+    <!-- Console Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>
+                    {"timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}", "application":"swagger-api-docx", "environment":"production", "host":"${HOSTNAME:-localhost}", "thread":"%thread", "level":"%level", "logger":"%logger{36}", "message":"%msg", "traceId":"%X{traceId}", "spanId":"%X{spanId}", "userId":"%X{userId}", "exception":"%replace(%ex){'\\n','\\\\n'}"}%n
+                </pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- File Appender for Application Logs -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily log rotation -->
+            <fileNamePattern>logs/application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Retain logs for 30 days -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>
+                    {"timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}", "application":"swagger-api-docx", "environment":"production", "host":"${HOSTNAME:-localhost}", "thread":"%thread", "level":"%level", "logger":"%logger{36}", "message":"%msg", "traceId":"%X{traceId}", "spanId":"%X{spanId}", "userId":"%X{userId}", "exception":"%replace(%ex){'\\n','\\\\n'}"}%n
+                </pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Logger for Specific Packages (Optional) -->
+    <logger name="com.popcorn" level="DEBUG"/>
+
+</configuration>

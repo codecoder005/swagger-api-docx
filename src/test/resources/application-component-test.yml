@@ -3,6 +3,11 @@ outbound:
     url: localhost:18080
 
 spring:
+  security:
+    user:
+      name: user
+      password: password
+      roles: USER, ADMIN, EMPLOYEE, CLIENT
   cloud:
     compatibility-verifier:
       enabled: false
