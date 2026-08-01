@@ -42,36 +42,4 @@ public class UsersAPIStepDefinition extends CucumberSpringConfiguration {
     public void the_response_body_should_include_a_field(String fieldName) {
 
     }
-
-//    @Before
-//    void setupScenario() throws Exception {
-//
-//    }
-//
-//    @Given("the application is running")
-//    public void theApplicationIsRunning() {
-//    }
-//
-//    @When("I send a GET request to {string}")
-//    public void iSendAGETRequestTo(String arg0) {
-//        URI pingURI = URI.create("/api/v1/users/ping");
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-//        testtestRestTemplate.exchange(pingURI, HttpMethod.GET, httpEntity, String.class);
-//    }
-//
-//    @Then("the response status code should be {int}")
-//    public void theResponseStatusCodeShouldBe(int arg0) {
-//
-//    }
-
-//    @And("the response body should contain: status {int} message {string} timestamp {string}")
-//    public void theResponseBodyShouldContainStatusStatusMessageMessageTimestampTimestamp(int status, String message, String timestamp) {
-//
-//    }
-
-//    @And("the response body should contain: status <status> message <message> timestamp <timestamp>")
-//    public void theResponseBodyShouldContainStatusStatusMessageMessageTimestampTimestamp(int status, String message, String timestamp) {
-//
-//    }
 }
