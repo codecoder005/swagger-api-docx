@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>3.5.15</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.popcorn</groupId>
@@ -38,10 +38,11 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
-		<spring-cloud.version>2024.0.0</spring-cloud.version>
-		<au.com.dius.pact.consumer-version>4.6.14</au.com.dius.pact.consumer-version>
-		<au.com.dius.pact.provider-version>4.6.14</au.com.dius.pact.provider-version>
-		<cucumber.version>7.18.1</cucumber.version>
+		<spring-cloud.version>2025.0.1</spring-cloud.version>
+		<springdoc-openapi-starter-webmvc-ui.version>2.8.17</springdoc-openapi-starter-webmvc-ui.version>
+		<au.com.dius.pact.consumer-version>4.7.3</au.com.dius.pact.consumer-version>
+		<au.com.dius.pact.provider-version>4.7.3</au.com.dius.pact.provider-version>
+		<cucumber.version>7.34.4</cucumber.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -74,22 +75,22 @@
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>3.2.1</version>
+			<version>3.2.6</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<groupId>tools.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.18.1</version>
+			<version>3.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.11.0</version>
+			<version>2.14.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.7.0</version>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi-starter-webmvc-ui.version}</version>
 		</dependency>
 
 		<dependency>
