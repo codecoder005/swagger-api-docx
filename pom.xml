@@ -47,6 +47,7 @@
 		<au.com.dius.pact.consumer-version>4.7.6</au.com.dius.pact.consumer-version>
 		<au.com.dius.pact.provider-version>4.7.6</au.com.dius.pact.provider-version>
 		<cucumber.version>8.0.4</cucumber.version>
+		<springdoc-openapi-starter-webmvc-scalar.version>3.2.0</springdoc-openapi-starter-webmvc-scalar.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -95,6 +96,12 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-scalar</artifactId>
+			<version>${springdoc-openapi-starter-webmvc-scalar.version}</version>
 		</dependency>
 
 		<dependency>
