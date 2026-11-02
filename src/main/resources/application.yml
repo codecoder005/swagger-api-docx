@@ -27,3 +27,6 @@ springdoc:
       - url: /v3/api-docs/users
         name: users
         display-name: Users REST API Documentation
+
+scalar:
+  enabled: true
